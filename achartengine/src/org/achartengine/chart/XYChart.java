@@ -529,13 +529,14 @@ public abstract class XYChart extends AbstractChart {
     }
     // float[] points = MathHelper.getFloats(pointsList);
     drawSeries(canvas, paint, pointsList, seriesRenderer, yAxisValue, seriesIndex, startIndex);
-    if (isRenderPoints(seriesRenderer)) {
+    drawPoints(canvas, paint, pointsList, seriesRenderer, yAxisValue, seriesIndex, startIndex);
+    /*if (isRenderPoints(seriesRenderer)) {
       ScatterChart pointsChart = getPointsChart();
       if (pointsChart != null) {
         pointsChart.drawSeries(canvas, paint, pointsList, seriesRenderer, yAxisValue, seriesIndex,
             startIndex);
       }
-    }
+    }*/
     paint.setTextSize(seriesRenderer.getChartValuesTextSize());
     if (or == Orientation.HORIZONTAL) {
       paint.setTextAlign(Align.CENTER);
@@ -551,6 +552,28 @@ public abstract class XYChart extends AbstractChart {
       setStroke(cap, join, miter, style, pathEffect, paint);
     }
   }
+  
+  /**
+    * Draws the series points.
+    *
+    * @param canvas the canvas
+    * @param paint the paint object
+    * @param pointsList the points to be rendered
+    * @param seriesRenderer the series renderer
+    * @param yAxisValue the y axis value in pixels
+    * @param seriesIndex the series index
+    * @param startIndex the start index of the rendering points
+    */
+   protected void drawPoints(Canvas canvas, Paint paint, List<Float> pointsList,
+       XYSeriesRenderer seriesRenderer, float yAxisValue, int seriesIndex, int startIndex) {
+     if (isRenderPoints(seriesRenderer)) {
+       ScatterChart pointsChart = getPointsChart();
+       if (pointsChart != null) {
+         pointsChart.drawSeries(canvas, paint, pointsList, seriesRenderer, yAxisValue, seriesIndex,
+             startIndex);
+       }
+     }
+   }
 
   private void setStroke(Cap cap, Join join, float miter, Style style, PathEffect pathEffect,
       Paint paint) {
@@ -869,7 +892,7 @@ public abstract class XYChart extends AbstractChart {
     double realMaxX = mRenderer.getXAxisMax(scale);
     double realMinY = mRenderer.getYAxisMin(scale);
     double realMaxY = mRenderer.getYAxisMax(scale);
-    if (!mRenderer.isMinXSet(scale) || !mRenderer.isMaxXSet(scale) || !mRenderer.isMinXSet(scale)
+    if (!mRenderer.isMinXSet(scale) || !mRenderer.isMaxXSet(scale) || !mRenderer.isMinYSet(scale)
         || !mRenderer.isMaxYSet(scale)) {
       double[] calcRange = getCalcRange(scale);
       realMinX = calcRange[0];
